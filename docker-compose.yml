@@ -16,9 +16,13 @@ services:
       dockerfile: php-fpm.docker
     volumes:
       - ./manager:/app
+    environment:
+      APP_DEBUG: 1
   projector-php-cli:
     build:
       context: ./manager/docker/development
       dockerfile: php-cli.docker
     volumes:
       - ./manager:/app
+    environment:
+      APP_DEBUG: 1
