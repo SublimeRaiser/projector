@@ -1,6 +1,6 @@
-init: docker-down docker-pull docker-build docker-up
-
 up: docker-up
+init: docker-down docker-pull docker-build docker-up manager-init
+manager-init: manager-composer-install
 
 docker-up:
 	docker-compose up -d
@@ -13,6 +13,9 @@ docker-pull:
 
 docker-build:
 	docker-compose build
+
+manager-composer-install:
+	docker-compose run --rm projector-php-cli composer install --quiet
 
 cli:
 	docker-compose run --rm projector-php-cli php bin/app.php
