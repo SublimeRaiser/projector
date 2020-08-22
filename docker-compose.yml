@@ -1,0 +1,24 @@
+version: '3'
+services:
+  projector-nginx:
+    build:
+      context: ./manager/docker/development
+      dockerfile: nginx.docker
+    volumes:
+      - ./manager:/app
+    depends_on:
+      - projector-php-fpm
+    ports:
+      - "8080:80"
+  projector-php-fpm:
+    build:
+      context: ./manager/docker/development
+      dockerfile: php-fpm.docker
+    volumes:
+      - ./manager:/app
+  projector-php-cli:
+    build:
+      context: ./manager/docker/development
+      dockerfile: php-cli.docker
+    volumes:
+      - ./manager:/app
