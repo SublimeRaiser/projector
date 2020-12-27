@@ -7,8 +7,8 @@ services:
       - projector-php-fpm
     ports:
       - "80:80"
-  manager-php-fpm:
+  projector-php-fpm:
     image: ${REGISTRY_ADDRESS}/projector-php-fpm:${IMAGE_TAG}
     restart: always
-  manager-php-cli:
+  projector-php-cli:
     image: ${REGISTRY_ADDRESS}/projector-php-cli:${IMAGE_TAG}
