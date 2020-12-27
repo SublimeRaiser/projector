@@ -22,8 +22,8 @@ cli:
 
 build-production:
 	docker build --pull --file=manager/docker/production/nginx.docker --tag ${REGISTRY_ADDRESS}/projector-nginx:${IMAGE_TAG} manager/docker/production
-	docker build --pull --file=manager/docker/production/php-fpm.docker --tag ${REGISTRY_ADDRESS}/projector-php-fpm:${IMAGE_TAG} manager/docker/production
-	docker build --pull --file=manager/docker/production/php-cli.docker --tag ${REGISTRY_ADDRESS}/projector-php-cli:${IMAGE_TAG} manager/docker/production
+	docker build --pull --file=manager/docker/production/php-fpm.docker --tag ${REGISTRY_ADDRESS}/projector-php-fpm:${IMAGE_TAG} manager
+	docker build --pull --file=manager/docker/production/php-cli.docker --tag ${REGISTRY_ADDRESS}/projector-php-cli:${IMAGE_TAG} manager
 
 push-production:
 	docker push ${REGISTRY_ADDRESS}/projector-nginx:${IMAGE_TAG}
