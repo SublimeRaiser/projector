@@ -13,7 +13,7 @@ $errorMiddleware = $app->addErrorMiddleware((bool) getenv('APP_DEBUG'), true, tr
 $app->get('/', function (Request $request, Response $response, array $args) {
     $data = [
         'name'  => 'Projector',
-        'param' => $request->getQueryParams()['param'],
+        'param' => $request->getQueryParams()['param'] ?? null,
     ];
     $response->getBody()->write((string) json_encode($data));
     $response = $response->withHeader('Content-Type', 'application/json');
