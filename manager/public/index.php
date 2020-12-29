@@ -1,24 +1,27 @@
 <?php
 
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\Factory\AppFactory;
+use App\Kernel;
+use Symfony\Component\ErrorHandler\Debug;
+use Symfony\Component\HttpFoundation\Request;
 
-require __DIR__ . '/../vendor/autoload.php';
+require dirname(__DIR__).'/config/bootstrap.php';
 
-$app = AppFactory::create();
+if ($_SERVER['APP_DEBUG']) {
+    umask(0000);
 
-$errorMiddleware = $app->addErrorMiddleware((bool) getenv('APP_DEBUG'), true, true);
+    Debug::enable();
+}
 
-$app->get('/', function (Request $request, Response $response, array $args) {
-    $data = [
-        'name'  => 'Projector',
-        'param' => $request->getQueryParams()['param'] ?? null,
-    ];
-    $response->getBody()->write((string) json_encode($data));
-    $response = $response->withHeader('Content-Type', 'application/json');
+if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? false) {
+    Request::setTrustedProxies(explode(',', $trustedProxies), Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_PORT | Request::HEADER_X_FORWARDED_PROTO);
+}
 
-    return $response;
-});
+if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? false) {
+    Request::setTrustedHosts([$trustedHosts]);
+}
 
-$app->run();
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+$request = Request::createFromGlobals();
+$response = $kernel->handle($request);
+$response->send();
+$kernel->terminate($request, $response);

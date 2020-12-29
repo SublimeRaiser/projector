@@ -1,2 +1,16 @@
 .idea/
+
+###> symfony/framework-bundle ###
+manager/.env.local
+manager/.env.local.php
+manager/.env.*.local
+manager/config/secrets/prod/prod.decrypt.private.php
+manager/public/bundles/
+manager/var/
 manager/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+manager/bin/.phpunit/
+manager/phpunit.xml
+###< symfony/phpunit-bridge ###
