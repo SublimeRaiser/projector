@@ -24,5 +24,8 @@ services:
       dockerfile: php-cli.docker
     volumes:
       - ./manager:/app
+      - composer:/root/.composer/cache
     environment:
       APP_DEBUG: 1
+volumes:
+  composer:
