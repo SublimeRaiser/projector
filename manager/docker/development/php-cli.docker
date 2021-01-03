@@ -1,7 +1,8 @@
 FROM php:7.2-cli
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --quiet
-RUN apt-get update && apt-get install unzip -y
+RUN apt-get update && apt-get install unzip -y \
+    && apt-get install libpq-dev -y && docker-php-ext-install pdo_pgsql
 RUN curl -sS https://get.symfony.com/cli/installer | bash \
     && mv /root/.symfony/bin/symfony /usr/local/bin/symfony
 
