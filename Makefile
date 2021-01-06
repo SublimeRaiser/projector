@@ -1,6 +1,6 @@
 up: docker-up
 init: docker-down-clear docker-pull docker-build docker-up manager-init
-manager-init: manager-composer-install
+manager-init: manager-composer-install manager-migrations
 test: manager-test
 
 docker-up:
@@ -22,7 +22,13 @@ manager-test:
 	docker-compose run --rm projector-php-cli php bin/phpunit
 
 manager-composer-install:
-	docker-compose run --rm projector-php-cli composer install --quiet
+	docker-compose run --rm projector-php-cli composer install
+
+manager-wait-db:
+	until docker-compose exec -T manager-postgres pg_isready --timeout=0 --dbname=app ; do sleep 1 ; done
+
+manager-migrations:
+	docker-compose run --rm projector-php-cli php bin/console doctrine:migrations:migrate --no-interaction
 
 cli:
 	docker-compose run --rm projector-php-cli php bin/app.php
