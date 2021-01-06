@@ -18,9 +18,6 @@ docker-pull:
 docker-build:
 	docker-compose build
 
-manager-test:
-	docker-compose run --rm projector-php-cli php bin/phpunit
-
 manager-composer-install:
 	docker-compose run --rm projector-php-cli composer install
 
@@ -29,6 +26,9 @@ manager-wait-db:
 
 manager-migrations:
 	docker-compose run --rm projector-php-cli php bin/console doctrine:migrations:migrate --no-interaction
+
+manager-test:
+	docker-compose run --rm projector-php-cli php bin/phpunit
 
 cli:
 	docker-compose run --rm projector-php-cli php bin/app.php
