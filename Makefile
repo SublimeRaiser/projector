@@ -30,9 +30,6 @@ manager-migrations:
 manager-test:
 	docker-compose run --rm projector-php-cli php bin/phpunit
 
-cli:
-	docker-compose run --rm projector-php-cli php bin/app.php
-
 build-production:
 	docker build --pull --file=manager/docker/production/nginx.docker --tag ${REGISTRY_ADDRESS}/projector-nginx:${IMAGE_TAG} manager/docker/production
 	docker build --pull --file=manager/docker/production/php-fpm.docker --tag ${REGISTRY_ADDRESS}/projector-php-fpm:${IMAGE_TAG} manager
