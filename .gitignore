@@ -13,4 +13,5 @@ manager/vendor/
 ###> symfony/phpunit-bridge ###
 manager/bin/.phpunit/
 manager/phpunit.xml
+manager/.phpunit.result.cache
 ###< symfony/phpunit-bridge ###
