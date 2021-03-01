@@ -1,4 +1,8 @@
 FROM php:7.2-fpm
-RUN apt-get update && apt-get install libpq-dev -y && docker-php-ext-install pdo_pgsql
+RUN apt-get update \
+    # extension required for PostgreSQL
+    && apt-get install -y libpq-dev && docker-php-ext-install pdo_pgsql \
+    # extensions recommended for ramsey/uuid
+    && apt-get install -y libgmp-dev && docker-php-ext-install bcmath gmp
 
 WORKDIR /app
