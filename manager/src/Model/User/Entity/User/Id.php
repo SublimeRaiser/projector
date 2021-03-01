@@ -12,6 +12,11 @@ class Id
     /** @var string */
     private $value;
 
+    /**
+     * Id constructor.
+     *
+     * @param string $value
+     */
     public function __construct(string $value)
     {
         Assert::notEmpty($value);

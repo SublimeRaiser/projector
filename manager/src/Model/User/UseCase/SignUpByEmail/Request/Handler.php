@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Model\User\UseCase\SignUp\Request;
+namespace App\Model\User\UseCase\SignUpByEmail\Request;
 
 use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserRepositoryInterface;
+use App\Model\User\FlusherInterface;
 use App\Model\User\Service\ConfirmTokenGeneratorInterface;
+use App\Model\User\Service\ConfirmTokenSenderInterface;
 use App\Model\User\Service\PasswordHasherInterface;
 use DateTimeImmutable;
 use DomainException;
@@ -16,12 +18,12 @@ use DomainException;
 class Handler
 {
     /** @var UserRepositoryInterface */
-    private $users;
+    private $userRepo;
 
-    /** @var PasswordHasher */
+    /** @var PasswordHasherInterface */
     private $hasher;
 
-    /** @var Flusher */
+    /** @var FlusherInterface */
     private $flusher;
 
     /** @var ConfirmTokenGeneratorInterface */
@@ -30,14 +32,23 @@ class Handler
     /** @var ConfirmTokenSenderInterface */
     private $tokenSender;
 
+    /**
+     * Handler constructor.
+     *
+     * @param UserRepositoryInterface        $userRepo
+     * @param PasswordHasherInterface        $hasher
+     * @param FlusherInterface               $flusher
+     * @param ConfirmTokenGeneratorInterface $tokenGenerator
+     * @param ConfirmTokenSenderInterface    $tokenSender
+     */
     public function __construct(
-        UserRepositoryInterface $users,
+        UserRepositoryInterface $userRepo,
         PasswordHasherInterface $hasher,
-        Flusher $flusher,
+        FlusherInterface $flusher,
         ConfirmTokenGeneratorInterface $tokenGenerator,
-        ConfirmTokerSenderInterface $tokenSender
+        ConfirmTokenSenderInterface $tokenSender
     ) {
-        $this->users          = $users;
+        $this->userRepo       = $userRepo;
         $this->hasher         = $hasher;
         $this->flusher        = $flusher;
         $this->tokenGenerator = $tokenGenerator;
@@ -48,21 +59,20 @@ class Handler
     {
         $email = new Email($command->email);
 
-        if ($this->users->hasByEmail($email)) {
+        if ($this->userRepo->hasByEmail($email)) {
             throw new DomainException('User already exists.');
         }
 
-        $user = new User(
-            Id::next(),
+        $user = new User(Id::next(), new DateTimeImmutable());
+        $user->requestSignUpByEmail(
             $email,
             $this->hasher->hash($command->password),
-            $token = $this->tokenGenerator->generate(),
-            new DateTimeImmutable()
+            $token = $this->tokenGenerator->generate()
         );
 
-        $this->users->add($user);
+        $this->userRepo->add($user);
         $this->flusher->flush();
 
-        $this->tokenSender->send($email, $token);
+        $this->tokenSender->send($user->getEmail(), $user->getConfirmToken());
     }
 }

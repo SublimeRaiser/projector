@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Model\User\Entity\User\SignUp;
+namespace App\Tests\Unit\Model\User\Entity\User\SignUpByEmail;
 
 use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\Id;
@@ -15,11 +15,13 @@ class RequestTest extends TestCase
     public function testSuccess(): void
     {
         $user = new User(
-            $id    = Id::next(),
+            $id   = Id::next(),
+            $date = new DateTimeImmutable()
+        );
+        $user->requestSignUpByEmail(
             $email = new Email('test@app.test'),
             $hash  = 'hash',
-            $token = 'token',
-            $date  = new DateTimeImmutable()
+            $token = 'token'
         );
 
         self::assertTrue($user->isWait());

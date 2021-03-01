@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Model\User\Entity\User\SignUp;
+namespace App\Tests\Unit\Model\User\Entity\User\SignUpByEmail;
 
 use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\Id;
@@ -10,12 +10,12 @@ use App\Model\User\Entity\User\User;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
-class ConfirmTest extends TestCase
+class SignUpTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $user = $this->buildSignedUpUser();
-        $user->confirmSignUp();
+        $user = $this->buildSignedUpByEmailUser();
+        $user->signUpByEmail();
 
         self::assertFalse($user->isWait());
         self::assertTrue($user->isActive());
@@ -24,21 +24,18 @@ class ConfirmTest extends TestCase
 
     public function testAlreadyConfirmed(): void
     {
-        $user = $this->buildSignedUpUser();
-        $user->confirmSignUp();
+        $user = $this->buildSignedUpByEmailUser();
+        $user->signUpByEmail();
 
         $this->expectExceptionMessage('User has already confirmed registration.');
-        $user->confirmSignUp();
+        $user->signUpByEmail();
     }
 
-    private function buildSignedUpUser(): User
+    private function buildSignedUpByEmailUser(): User
     {
-        return new User(
-            $id    = Id::next(),
-            $email = new Email('test@app.test'),
-            $hash  = 'hash',
-            $token = 'token',
-            $date  = new DateTimeImmutable()
-        );
+        $user = new User(Id::next(), new DateTimeImmutable());
+        $user->requestSignUpByEmail(new Email('test@app.test'), 'hash', 'token');
+
+        return $user;
     }
 }
