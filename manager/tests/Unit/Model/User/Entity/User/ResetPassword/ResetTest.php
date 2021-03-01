@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Model\User\Entity\User\ResetPassword;
 
-use App\Model\User\Entity\User\Email;
-use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\ResetToken;
-use App\Model\User\Entity\User\User;
+use App\Tests\Factory\User\UserFactory;
 use DateTimeImmutable;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +16,7 @@ class ResetTest extends TestCase
     {
         $now   = new DateTimeImmutable();
         $token = new ResetToken('token', $now->modify('+1 day'));
-        $user  = $this->buildSignedUpByEmailUser();
+        $user  = UserFactory::buildSignedUpByEmailUser();
 
         $user->requestPasswordReset($token, $now);
         $user->resetPassword($hash = 'hash_new', $now);
@@ -31,7 +29,7 @@ class ResetTest extends TestCase
     {
         $now   = new DateTimeImmutable();
         $token = new ResetToken('token', $now->modify('+1 day'));
-        $user  = $this->buildSignedUpByEmailUser();
+        $user  = UserFactory::buildSignedUpByEmailUser();
 
         $user->requestPasswordReset($token, $now);
         $this->expectExceptionMessage('Password reset token has expired.');
@@ -41,18 +39,9 @@ class ResetTest extends TestCase
     public function testNotRequested(): void
     {
         $now  = new DateTimeImmutable();
-        $user = $this->buildSignedUpByEmailUser();
+        $user  = UserFactory::buildSignedUpByEmailUser();
 
         $this->expectExceptionMessage('Password reset was not requested.');
         $user->resetPassword('hash_new', $now);
     }
-
-    private function buildSignedUpByEmailUser(): User
-    {
-        $user = new User(Id::next(), new DateTimeImmutable());
-        $user->requestSignUpByEmail(new Email('test@app.test'), 'hash', 'token');
-
-        return $user;
-    }
-
 }

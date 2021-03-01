@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Model\User\Entity\User\ResetPassword;
 
-use App\Model\User\Entity\User\Email;
-use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\ResetToken;
-use App\Model\User\Entity\User\User;
+use App\Tests\Factory\User\UserFactory;
 use DateTimeImmutable;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +16,7 @@ class RequestTest extends TestCase
     {
         $now   = new DateTimeImmutable();
         $token = new ResetToken($tokenValue = 'token', $now->modify('+1 day'));
-        $user  = $this->buildSignedUpByEmailUser();
+        $user  = UserFactory::buildSignedUpByEmailUser();
 
         $user->requestPasswordReset($token, $now);
 
@@ -29,7 +27,7 @@ class RequestTest extends TestCase
     {
         $now   = new DateTimeImmutable();
         $token = new ResetToken('token', $now->modify('+1 day'));
-        $user  = $this->buildSignedUpByEmailUser();
+        $user  = UserFactory::buildSignedUpByEmailUser();
 
         $user->requestPasswordReset($token, $now);
         $this->expectExceptionMessage('Password reset is already requested.');
@@ -40,7 +38,7 @@ class RequestTest extends TestCase
     {
         $now    = new DateTimeImmutable();
         $token1 = new ResetToken('token', $now->modify('+1 day'));
-        $user   = $this->buildSignedUpByEmailUser();
+        $user  = UserFactory::buildSignedUpByEmailUser();
 
         $user->requestPasswordReset($token1, $now);
         Assert::assertEquals($token1, $user->getResetToken());
@@ -54,25 +52,9 @@ class RequestTest extends TestCase
     {
         $now   = new DateTimeImmutable();
         $token = new ResetToken('token', $now->modify('+1 day'));
-        $user  = $this->buildSignedUpByNetworkUser();
+        $user  = UserFactory::buildSignedUpByNetworkUser();
 
         $this->expectExceptionMessage('Email is not specified.');
         $user->requestPasswordReset($token, $now);
-    }
-
-    private function buildSignedUpByEmailUser(): User
-    {
-        $user = new User(Id::next(), new DateTimeImmutable());
-        $user->requestSignUpByEmail(new Email('test@app.test'), 'hash', 'token');
-
-        return $user;
-    }
-
-    private function buildSignedUpByNetworkUser(): User
-    {
-        $user = new User(Id::next(), new DateTimeImmutable());
-        $user->signUpByNetwork('vk', '0000001');
-
-        return $user;
     }
 }

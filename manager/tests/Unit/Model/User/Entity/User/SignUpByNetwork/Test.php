@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Model\User\Entity\User\SignUpByNetwork;
 
-use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\Network;
-use App\Model\User\Entity\User\User;
-use DateTimeImmutable;
+use App\Tests\Factory\User\UserFactory;
 use PHPUnit\Framework\TestCase;
 
 class Test extends TestCase
 {
     public function testSuccess(): void
     {
-        $user = $this->buildSignedUpByNetworkUser();
+        $user = UserFactory::buildSignedUpByNetworkUser();
 
         self::assertTrue($user->isActive());
 
@@ -26,17 +24,9 @@ class Test extends TestCase
 
     public function testAlreadySignedUp(): void
     {
-        $user = $this->buildSignedUpByNetworkUser();
+        $user = UserFactory::buildSignedUpByNetworkUser();
 
         $this->expectExceptionMessage('User is already signed up.');
         $user->signUpByNetwork('vk', '0000001');
-    }
-
-    private function buildSignedUpByNetworkUser(): User
-    {
-        $user = new User(Id::next(), new DateTimeImmutable());
-        $user->signUpByNetwork('vk', '0000001');
-
-        return $user;
     }
 }
