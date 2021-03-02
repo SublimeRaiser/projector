@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Model\User\Entity\User\SignUpByNetwork;
 
 use App\Model\User\Entity\User\Network;
-use App\Tests\Factory\User\UserFactory;
+use App\Tests\Builder\User\TestUserBuilder;
 use PHPUnit\Framework\TestCase;
 
 class Test extends TestCase
 {
     public function testSuccess(): void
     {
-        $user = UserFactory::buildSignedUpByNetworkUser();
+        $user = (new TestUserBuilder())->requestSignUpByNetwork()->build();
 
         self::assertTrue($user->isActive());
 
@@ -24,7 +24,7 @@ class Test extends TestCase
 
     public function testAlreadySignedUp(): void
     {
-        $user = UserFactory::buildSignedUpByNetworkUser();
+        $user = (new TestUserBuilder())->requestSignUpByNetwork()->build();
 
         $this->expectExceptionMessage('User is already signed up.');
         $user->signUpByNetwork('vk', '0000001');

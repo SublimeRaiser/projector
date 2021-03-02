@@ -5,18 +5,20 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Model\User\Entity\User\SignUpByEmail;
 
 use App\Model\User\Entity\User\Email;
-use App\Tests\Factory\User\UserFactory;
+use App\Tests\Builder\User\TestUserBuilder;
 use PHPUnit\Framework\TestCase;
 
 class RequestTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $user = UserFactory::buildSignedUpByEmailUser(
-            $email = new Email('test@app.test'),
-            $hash  = 'hash',
-            $token = 'token'
-        );
+        $user = (new TestUserBuilder())
+            ->requestSignUpByEmail(
+                $email = new Email('test@app.test'),
+                $hash  = 'hash',
+                $token = 'token'
+            )
+            ->build();
 
         self::assertTrue($user->isWait());
         self::assertFalse($user->isActive());

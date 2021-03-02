@@ -63,8 +63,11 @@ class User
         $this->status       = self::STATUS_WAIT;
     }
 
-    public function signUpByEmail(): void
+    public function confirmSignUpByEmail(): void
     {
+        if ($this->isNew()) {
+            throw new DomainException('Sign up was not requested.');
+        }
         if (!$this->isWait()) {
             throw new DomainException('User has already confirmed registration.');
         }
@@ -93,6 +96,9 @@ class User
 
     public function requestPasswordReset(ResetToken $resetToken, DateTimeImmutable $date): void
     {
+        if (!$this->isActive()) {
+            throw new DomainException('User has not confirmed registration yet.');
+        }
         if (!$this->getEmail()) {
             throw new DomainException('Email is not specified.');
         }

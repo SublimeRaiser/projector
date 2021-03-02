@@ -34,7 +34,7 @@ class Handler
         if (!$user) {
             throw new DomainException('Invalid or already used token.');
         }
-        $user->signUpByEmail();
+        $user->confirmSignUpByEmail();
         $this->flusher->flush();
     }
 }
