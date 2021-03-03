@@ -137,12 +137,12 @@ class User
         $this->status = $newStatus;
     }
 
-    public function changeRole(Role $role): void
+    public function changeRole(Role $newRole): void
     {
-        if ($this->getRole()->isEqual($role)) {
+        if ($this->getRole()->isEqual($newRole)) {
             throw new DomainException('This role has already been assigned.');
         }
-        $this->role = $role;
+        $this->role = $newRole;
     }
 
     public function getId(): Id
