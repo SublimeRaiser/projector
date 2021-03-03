@@ -38,6 +38,9 @@ class User
     /** @var ResetToken */
     private $resetToken;
 
+    /** @var Role */
+    private $role;
+
     /**
      * User constructor.
      *
@@ -50,6 +53,7 @@ class User
         $this->date     = $date;
         $this->status   = self::STATUS_NEW;
         $this->networks = new ArrayCollection();
+        $this->role     = Role::user();
     }
 
     public static function signUpByEmail(
@@ -130,6 +134,14 @@ class User
         $this->resetToken   = null;
     }
 
+    public function changeRole(Role $role): void
+    {
+        if ($this->getRole()->isEqual($role)) {
+            throw new DomainException('This role has already been assigned.');
+        }
+        $this->role = $role;
+    }
+
     public function getId(): Id
     {
         return $this->id;
@@ -178,5 +190,10 @@ class User
     public function getResetToken(): ?ResetToken
     {
        return $this->resetToken;
+    }
+
+    public function getRole(): Role
+    {
+        return $this->role;
     }
 }

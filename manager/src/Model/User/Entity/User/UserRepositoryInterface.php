@@ -12,6 +12,8 @@ interface UserRepositoryInterface
 
     public function getByEmail(Email $email): User;
 
+    public function getById(Id $id): User;
+
     public function hasByEmail(Email $email): bool;
 
     public function hasByNetwork(string $networkName, string $identity): bool;

@@ -20,5 +20,7 @@ class Test extends TestCase
         self::assertInstanceOf(Network::class, $first = reset($networks));
         self::assertEquals('vk', $first->getNetworkName());
         self::assertEquals('0000001', $first->getIdentity());
+
+        self::assertTrue($user->getRole()->isUser());
     }
 }

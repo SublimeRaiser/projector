@@ -28,5 +28,7 @@ class RequestTest extends TestCase
         self::assertEquals($hash, $user->getPasswordHash());
         self::assertEquals($token, $user->getConfirmToken());
         self::assertNotNull($user->getDate());
+
+        self::assertTrue($user->getRole()->isUser());
     }
 }
