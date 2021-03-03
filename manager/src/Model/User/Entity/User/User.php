@@ -10,10 +10,6 @@ use DomainException;
 
 class User
 {
-    private const STATUS_NEW    = 'new';
-    private const STATUS_WAIT   = 'wait';
-    private const STATUS_ACTIVE = 'active';
-
     /** @var string */
     private $id;
 
@@ -29,14 +25,14 @@ class User
     /** @var DateTimeImmutable */
     private $date;
 
-    /** @var string */
-    private $status;
-
     /** @var Network[]|ArrayCollection */
     private $networks;
 
     /** @var ResetToken */
     private $resetToken;
+
+    /** @var Status */
+    private $status;
 
     /** @var Role */
     private $role;
@@ -51,8 +47,8 @@ class User
     {
         $this->id       = $id;
         $this->date     = $date;
-        $this->status   = self::STATUS_NEW;
         $this->networks = new ArrayCollection();
+        $this->status   = Status::new();
         $this->role     = Role::user();
     }
 
@@ -67,7 +63,7 @@ class User
         $user->email        = $email;
         $user->passwordHash = $passwordHash;
         $user->confirmToken = $confirmToken;
-        $user->status       = self::STATUS_WAIT;
+        $user->changeStatus(Status::wait());
 
         return $user;
     }
@@ -80,7 +76,7 @@ class User
     ): self {
         $user = new self($id, $date);
         $user->networks->add(new Network($user, $networkName, $identity));
-        $user->status = self::STATUS_ACTIVE;
+        $user->changeStatus(Status::active());
 
         return $user;
     }
@@ -93,7 +89,7 @@ class User
         if (!$this->isWait()) {
             throw new DomainException('User has already confirmed registration.');
         }
-        $this->status       = self::STATUS_ACTIVE;
+        $this->changeStatus(Status::active());
         $this->confirmToken = null;
     }
 
@@ -133,6 +129,14 @@ class User
         $this->resetToken   = null;
     }
 
+    public function changeStatus(Status $newStatus): void
+    {
+        if ($this->getStatus()->isEqual($newStatus)) {
+            throw new DomainException('This status has already been assigned.');
+        }
+        $this->status = $newStatus;
+    }
+
     public function changeRole(Role $role): void
     {
         if ($this->getRole()->isEqual($role)) {
@@ -168,17 +172,17 @@ class User
 
     public function isNew(): bool
     {
-        return $this->status === self::STATUS_NEW;
+        return $this->status->isNew();
     }
 
     public function isWait(): bool
     {
-        return $this->status === self::STATUS_WAIT;
+        return $this->status->isWait();
     }
 
     public function isActive(): bool
     {
-        return $this->status === self::STATUS_ACTIVE;
+        return $this->status->isActive();
     }
 
     public function getNetworks(): array
@@ -194,5 +198,10 @@ class User
     public function getRole(): Role
     {
         return $this->role;
+    }
+
+    public function getStatus(): Status
+    {
+        return $this->status;
     }
 }
