@@ -97,7 +97,6 @@ class User
         $this->confirmToken = null;
     }
 
-
     public function attachNetwork(string $attachedNetworkName, string $identity): void
     {
         foreach ($this->networks as $userNetwork) {
