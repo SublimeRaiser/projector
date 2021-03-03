@@ -8,20 +8,17 @@ use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\User;
 use DateTimeImmutable;
-use Exception;
 
 class TestUserBuilder
 {
+    /** @var User */
     private $user;
 
-    public function __construct()
+    public function signUpByEmail(Email $email = null, string $hash = null, string $token = null): self
     {
-        $this->user = new User(Id::next(), new DateTimeImmutable());
-    }
-
-    public function requestSignUpByEmail(Email $email = null, string $hash = null, string $token = null): self
-    {
-        $this->user->requestSignUpByEmail(
+        $this->user = User::signUpByEmail(
+            Id::next(),
+            new DateTimeImmutable(),
             $email ?? new Email('test@app.test'),
             $hash  ?? 'hash',
             $token ?? 'token'
@@ -30,9 +27,11 @@ class TestUserBuilder
         return $this;
     }
 
-    public function requestSignUpByNetwork(string $networkName = null, string $identity = null): self
+    public function signUpByNetwork(string $networkName = null, string $identity = null): self
     {
-        $this->user->signUpByNetwork(
+        $this->user = User::signUpByNetwork(
+            Id::next(),
+            new DateTimeImmutable(),
             $networkName ?? 'vk',
             $identity    ?? '0000001'
         );

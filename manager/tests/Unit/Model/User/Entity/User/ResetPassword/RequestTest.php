@@ -16,7 +16,7 @@ class RequestTest extends TestCase
     {
         $now   = new DateTimeImmutable();
         $token = new ResetToken($tokenValue = 'token', $now->modify('+1 day'));
-        $user  = (new TestUserBuilder())->requestSignUpByEmail()->confirmSignUpByEmail()->build();
+        $user  = (new TestUserBuilder())->signUpByEmail()->confirmSignUpByEmail()->build();
 
         $user->requestPasswordReset($token, $now);
 
@@ -27,7 +27,7 @@ class RequestTest extends TestCase
     {
         $now   = new DateTimeImmutable();
         $token = new ResetToken('token', $now->modify('+1 day'));
-        $user  = (new TestUserBuilder())->requestSignUpByEmail()->confirmSignUpByEmail()->build();
+        $user  = (new TestUserBuilder())->signUpByEmail()->confirmSignUpByEmail()->build();
 
         $user->requestPasswordReset($token, $now);
         $this->expectExceptionMessage('Password reset is already requested.');
@@ -38,7 +38,7 @@ class RequestTest extends TestCase
     {
         $now    = new DateTimeImmutable();
         $token1 = new ResetToken('token', $now->modify('+1 day'));
-        $user   = (new TestUserBuilder())->requestSignUpByEmail()->confirmSignUpByEmail()->build();
+        $user   = (new TestUserBuilder())->signUpByEmail()->confirmSignUpByEmail()->build();
 
         $user->requestPasswordReset($token1, $now);
         Assert::assertEquals($token1, $user->getResetToken());
@@ -52,7 +52,7 @@ class RequestTest extends TestCase
     {
         $now   = new DateTimeImmutable();
         $token = new ResetToken('token', $now->modify('+1 day'));
-        $user  = (new TestUserBuilder())->requestSignUpByNetwork()->build();
+        $user  = (new TestUserBuilder())->signUpByNetwork()->build();
 
         $this->expectExceptionMessage('Email is not specified.');
         $user->requestPasswordReset($token, $now);
@@ -62,7 +62,7 @@ class RequestTest extends TestCase
     {
         $now   = new DateTimeImmutable();
         $token = new ResetToken('token', $now->modify('+1 day'));
-        $user  = (new TestUserBuilder())->requestSignUpByEmail()->build();
+        $user  = (new TestUserBuilder())->signUpByEmail()->build();
 
         $this->expectExceptionMessage('User has not confirmed registration yet.');
         $user->requestPasswordReset($token, $now);

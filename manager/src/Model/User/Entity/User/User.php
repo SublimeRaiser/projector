@@ -44,7 +44,7 @@ class User
      * @param Id $id
      * @param DateTimeImmutable $date
      */
-    public function __construct(Id $id, DateTimeImmutable $date)
+    private function __construct(Id $id, DateTimeImmutable $date)
     {
         $this->id       = $id;
         $this->date     = $date;
@@ -52,15 +52,33 @@ class User
         $this->networks = new ArrayCollection();
     }
 
-    public function requestSignUpByEmail(Email $email, string $passwordHash, string $confirmToken): void
-    {
-        if (!$this->isNew()) {
-            throw new DomainException('User is already signed up.');
-        }
-        $this->email        = $email;
-        $this->passwordHash = $passwordHash;
-        $this->confirmToken = $confirmToken;
-        $this->status       = self::STATUS_WAIT;
+    public static function signUpByEmail(
+        Id $id,
+        DateTimeImmutable $date,
+        Email $email,
+        string $passwordHash,
+        string $confirmToken
+    ): self {
+        $user               = new self($id, $date);
+        $user->email        = $email;
+        $user->passwordHash = $passwordHash;
+        $user->confirmToken = $confirmToken;
+        $user->status       = self::STATUS_WAIT;
+
+        return $user;
+    }
+
+    public static function signUpByNetwork(
+        Id $id,
+        DateTimeImmutable $date,
+        string $networkName,
+        string $identity
+    ): self {
+        $user = new self($id, $date);
+        $user->networks->add(new Network($user, $networkName, $identity));
+        $user->status = self::STATUS_ACTIVE;
+
+        return $user;
     }
 
     public function confirmSignUpByEmail(): void
@@ -75,14 +93,6 @@ class User
         $this->confirmToken = null;
     }
 
-    public function signUpByNetwork(string $networkName, string $identity): void
-    {
-        if (!$this->isNew()) {
-            throw new DomainException('User is already signed up.');
-        }
-        $this->networks->add(new Network($this, $networkName, $identity));
-        $this->status = self::STATUS_ACTIVE;
-    }
 
     public function attachNetwork(string $attachedNetworkName, string $identity): void
     {

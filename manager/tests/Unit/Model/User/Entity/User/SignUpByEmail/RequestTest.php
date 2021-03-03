@@ -13,7 +13,7 @@ class RequestTest extends TestCase
     public function testSuccess(): void
     {
         $user = (new TestUserBuilder())
-            ->requestSignUpByEmail(
+            ->signUpByEmail(
                 $email = new Email('test@app.test'),
                 $hash  = 'hash',
                 $token = 'token'

@@ -16,7 +16,7 @@ class ResetTest extends TestCase
     {
         $now   = new DateTimeImmutable();
         $token = new ResetToken('token', $now->modify('+1 day'));
-        $user  = (new TestUserBuilder())->requestSignUpByEmail()->confirmSignUpByEmail()->build();
+        $user  = (new TestUserBuilder())->signUpByEmail()->confirmSignUpByEmail()->build();
 
         $user->requestPasswordReset($token, $now);
         $user->resetPassword($hash = 'hash_new', $now);
@@ -29,7 +29,7 @@ class ResetTest extends TestCase
     {
         $now   = new DateTimeImmutable();
         $token = new ResetToken('token', $now->modify('+1 day'));
-        $user  = (new TestUserBuilder())->requestSignUpByEmail()->confirmSignUpByEmail()->build();
+        $user  = (new TestUserBuilder())->signUpByEmail()->confirmSignUpByEmail()->build();
 
         $user->requestPasswordReset($token, $now);
         $this->expectExceptionMessage('Password reset token has expired.');
@@ -39,7 +39,7 @@ class ResetTest extends TestCase
     public function testNotRequested(): void
     {
         $now  = new DateTimeImmutable();
-        $user = (new TestUserBuilder())->requestSignUpByEmail()->confirmSignUpByEmail()->build();
+        $user = (new TestUserBuilder())->signUpByEmail()->confirmSignUpByEmail()->build();
 
         $this->expectExceptionMessage('Password reset was not requested.');
         $user->resetPassword('hash_new', $now);
