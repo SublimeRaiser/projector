@@ -40,12 +40,12 @@ class Role
 
     public function isUser(): bool
     {
-        return $this->name === self::USER;
+        return $this->getName() === self::USER;
     }
 
     public function isAdmin(): bool
     {
-        return $this->name === self::ADMIN;
+        return $this->getName() === self::ADMIN;
     }
 
     public function isEqual(self $role): bool
