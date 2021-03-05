@@ -12,6 +12,11 @@ class Email
     /** @var string */
     private $value;
 
+    /**
+     * Email constructor.
+     *
+     * @param string $value
+     */
     public function __construct(string $value)
     {
         Assert::notEmpty($value);

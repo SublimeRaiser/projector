@@ -7,49 +7,96 @@ namespace App\Model\User\Entity\User;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use DomainException;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="user_user", uniqueConstraints={
+ *     @ORM\UniqueConstraint(columns={"email"}),
+ *     @ORM\UniqueConstraint(columns={"reset_token_value"}),
+ *     @ORM\UniqueConstraint(columns={"confirm_token"}),
+ * })
+ */
 class User
 {
-    /** @var string */
+    /**
+     * @var Id
+     *
+     * @ORM\Id
+     * @ORM\Column(type="user_user_id")
+     */
     private $id;
 
-    /** @var Email */
+    /**
+     * @var Email
+     *
+     * @ORM\Column(type="user_user_email", nullable=true)
+     */
     private $email;
 
-    /** @var string */
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     private $passwordHash;
 
-    /** @var string */
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
     private $confirmToken;
 
-    /** @var DateTimeImmutable */
-    private $date;
+    /**
+     * @var DateTimeImmutable
+     *
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private $createdAt;
 
-    /** @var Network[]|ArrayCollection */
+    /**
+     * @var Network[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Network", mappedBy="user", orphanRemoval=true, cascade={"persist"})
+     */
     private $networks;
 
-    /** @var ResetToken */
+    /**
+     * @var ResetToken|null
+     *
+     * @ORM\Embedded(class="ResetToken", columnPrefix="reset_token_")
+     */
     private $resetToken;
 
-    /** @var Status */
+    /**
+     * @var Status
+     *
+     * @ORM\Column(type="user_user_status")
+     */
     private $status;
 
-    /** @var Role */
+    /**
+     * @var Role
+     *
+     * @ORM\Column(type="user_user_role")
+     */
     private $role;
 
     /**
      * User constructor.
      *
-     * @param Id $id
+     * @param Id                $id
      * @param DateTimeImmutable $date
      */
     private function __construct(Id $id, DateTimeImmutable $date)
     {
-        $this->id       = $id;
-        $this->date     = $date;
-        $this->networks = new ArrayCollection();
-        $this->status   = Status::new();
-        $this->role     = Role::user();
+        $this->id        = $id;
+        $this->createdAt = $date;
+        $this->networks  = new ArrayCollection();
+        $this->status    = Status::new();
+        $this->role      = Role::user();
     }
 
     public static function signUpByEmail(
@@ -155,7 +202,7 @@ class User
         return $this->email;
     }
 
-    public function getPasswordHash(): string
+    public function getPasswordHash(): ?string
     {
         return $this->passwordHash;
     }
@@ -165,9 +212,9 @@ class User
         return $this->confirmToken;
     }
 
-    public function getDate(): DateTimeImmutable
+    public function getCreatedAt(): DateTimeImmutable
     {
-        return $this->date;
+        return $this->createdAt;
     }
 
     public function isNew(): bool
@@ -203,5 +250,15 @@ class User
     public function getStatus(): Status
     {
         return $this->status;
+    }
+
+    /**
+     * @ORM\PostLoad()
+     */
+    public function checkEmbeds(): void
+    {
+        if ($this->getResetToken()->isEmpty()) {
+            $this->resetToken = null;
+        }
     }
 }
