@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Model\User\UseCase\SignUpByEmail\SignUp;
 
-use App\Model\User\Entity\User\UserRepositoryInterface;
+use App\Model\User\Entity\User\UserRepository;
 use App\Model\User\FlusherInterface;
 use DomainException;
 
 class Handler
 {
-    /** @var UserRepositoryInterface */
+    /** @var UserRepository */
     private $userRepo;
 
     /** @var FlusherInterface */
@@ -19,10 +19,10 @@ class Handler
     /**
      * Handler constructor.
      *
-     * @param UserRepositoryInterface $users
+     * @param UserRepository $users
      * @param FlusherInterface        $flusher
      */
-    public function __construct(UserRepositoryInterface $users, FlusherInterface $flusher)
+    public function __construct(UserRepository $users, FlusherInterface $flusher)
     {
         $this->userRepo = $users;
         $this->flusher  = $flusher;

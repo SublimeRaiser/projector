@@ -6,14 +6,14 @@ namespace App\Model\User\UseCase\SignUpByNetwork;
 
 use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\User;
-use App\Model\User\Entity\User\UserRepositoryInterface;
+use App\Model\User\Entity\User\UserRepository;
 use App\Model\User\FlusherInterface;
 use DateTimeImmutable;
 use DomainException;
 
 class Handler
 {
-    /** @var UserRepositoryInterface */
+    /** @var UserRepository */
     private $userRepo;
 
     /** @var FlusherInterface */
@@ -22,10 +22,10 @@ class Handler
     /**
      * Handler constructor.
      *
-     * @param UserRepositoryInterface $userRepo
+     * @param UserRepository $userRepo
      * @param FlusherInterface        $flusher
      */
-    public function __construct(UserRepositoryInterface $userRepo, FlusherInterface $flusher)
+    public function __construct(UserRepository $userRepo, FlusherInterface $flusher)
     {
         $this->userRepo = $userRepo;
         $this->flusher  = $flusher;

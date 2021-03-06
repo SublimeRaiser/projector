@@ -7,7 +7,7 @@ namespace App\Model\User\UseCase\SignUpByEmail\Request;
 use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\User;
-use App\Model\User\Entity\User\UserRepositoryInterface;
+use App\Model\User\Entity\User\UserRepository;
 use App\Model\User\FlusherInterface;
 use App\Model\User\Service\ConfirmTokenGeneratorInterface;
 use App\Model\User\Service\ConfirmTokenSenderInterface;
@@ -17,7 +17,7 @@ use DomainException;
 
 class Handler
 {
-    /** @var UserRepositoryInterface */
+    /** @var UserRepository */
     private $userRepo;
 
     /** @var PasswordHasherInterface */
@@ -35,14 +35,14 @@ class Handler
     /**
      * Handler constructor.
      *
-     * @param UserRepositoryInterface        $userRepo
+     * @param UserRepository        $userRepo
      * @param PasswordHasherInterface        $hasher
      * @param FlusherInterface               $flusher
      * @param ConfirmTokenGeneratorInterface $tokenGenerator
      * @param ConfirmTokenSenderInterface    $tokenSender
      */
     public function __construct(
-        UserRepositoryInterface $userRepo,
+        UserRepository $userRepo,
         PasswordHasherInterface $hasher,
         FlusherInterface $flusher,
         ConfirmTokenGeneratorInterface $tokenGenerator,
