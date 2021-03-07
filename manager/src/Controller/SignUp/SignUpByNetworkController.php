@@ -33,16 +33,15 @@ class SignUpByNetworkController extends AbstractController
      * @Route("/signup", name="signup.request")
      *
      * @param Request                       $request
-     * @param SignUpByEmail\Request\Command $command
      * @param SignUpByEmail\Request\Handler $handler
      * @return Response
      */
     public function request(
         Request $request,
-        SignUpByEmail\Request\Command $command,
         SignUpByEmail\Request\Handler $handler
     ): Response {
-        $form = $this->createForm(SignUpByEmail\Request\Form::class, $command);
+        $command = new SignUpByEmail\Request\Command();
+        $form    = $this->createForm(SignUpByEmail\Request\Form::class, $command);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {
