@@ -59,4 +59,25 @@ class SignUpByNetworkController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/signup/{token}", name="signup.confirm")
+     * @param string                        $token
+     * @param SignUpByEmail\Confirm\Handler $handler
+     *
+     * @return Response
+     */
+    public function confirm(string $token, SignUpByEmail\Confirm\Handler $handler): Response
+    {
+        $command = new SignUpByEmail\Confirm\Command($token);
+        try {
+            $handler->handle($command);
+            $this->addFlash('success', 'Email is successfully confirmed.');
+        } catch (DomainException $e) {
+            $this->addFlash('error', $e->getMessage());
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
+        }
+
+        return $this->redirectToRoute('home');
+    }
 }
