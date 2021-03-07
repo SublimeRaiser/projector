@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Model\User\UseCase\SignUpByEmail\SignUp;
+namespace App\Model\User\UseCase\SignUpByEmail\Confirm;
 
 use App\Model\User\Entity\User\UserRepository;
 use App\Model\User\FlusherInterface;
