@@ -66,7 +66,7 @@ class ConfirmTokenSender
             ->from(...$this->from)
             ->to($email->getValue())
             ->subject('Sign Up Confirmation')
-            ->htmlTemplate('mail/user/signup.html.twig')
+            ->htmlTemplate('mail/auth/signup.html.twig')
             ->context([
                 'token' => $token,
             ]);
