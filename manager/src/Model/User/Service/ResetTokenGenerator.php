@@ -9,7 +9,7 @@ use DateInterval;
 use DateTimeImmutable;
 use Ramsey\Uuid\Uuid;
 
-class ResetTokenGenerator implements ResetTokenGeneratorInterface
+class ResetTokenGenerator
 {
     /** @var DateInterval */
     private $tokenLifetime;
