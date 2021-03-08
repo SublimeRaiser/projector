@@ -3,7 +3,7 @@
 declare(strict_type=1);
 
 return [
-    'User is not found'                        => 'Пользователь не найден.',
+    'User is not found.'                       => 'Пользователь не найден.',
     'Invalid or already used token.'           => 'Некорректный или уже активированный токен.',
     'User already exists.'                     => 'Пользователь уже существует.',
     'Password reset is already requested.'     => 'Восстановление пароля уже запрошено.',
