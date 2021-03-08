@@ -6,7 +6,7 @@ namespace App\Model\User\Service;
 
 use Ramsey\Uuid\Uuid;
 
-class ConfirmTokenGenerator implements ConfirmTokenGeneratorInterface
+class ConfirmTokenGenerator
 {
     public function generate(): string
     {

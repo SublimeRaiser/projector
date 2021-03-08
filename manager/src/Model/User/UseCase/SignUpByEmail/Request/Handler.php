@@ -9,7 +9,7 @@ use App\Model\User\Entity\User\Id;
 use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserRepository;
 use App\Model\User\FlusherInterface;
-use App\Model\User\Service\ConfirmTokenGeneratorInterface;
+use App\Model\User\Service\ConfirmTokenGenerator;
 use App\Model\User\Service\ConfirmTokenSender;
 use App\Model\User\Service\PasswordHasherInterface;
 use DateTimeImmutable;
@@ -26,7 +26,7 @@ class Handler
     /** @var FlusherInterface */
     private $flusher;
 
-    /** @var ConfirmTokenGeneratorInterface */
+    /** @var ConfirmTokenGenerator */
     private $tokenGenerator;
 
     /** @var ConfirmTokenSender */
@@ -35,17 +35,17 @@ class Handler
     /**
      * Handler constructor.
      *
-     * @param UserRepository                 $userRepo
-     * @param PasswordHasherInterface        $hasher
-     * @param FlusherInterface               $flusher
-     * @param ConfirmTokenGeneratorInterface $tokenGenerator
-     * @param ConfirmTokenSender             $tokenSender
+     * @param UserRepository          $userRepo
+     * @param PasswordHasherInterface $hasher
+     * @param FlusherInterface        $flusher
+     * @param ConfirmTokenGenerator   $tokenGenerator
+     * @param ConfirmTokenSender      $tokenSender
      */
     public function __construct(
         UserRepository $userRepo,
         PasswordHasherInterface $hasher,
         FlusherInterface $flusher,
-        ConfirmTokenGeneratorInterface $tokenGenerator,
+        ConfirmTokenGenerator $tokenGenerator,
         ConfirmTokenSender $tokenSender
     ) {
         $this->userRepo       = $userRepo;
