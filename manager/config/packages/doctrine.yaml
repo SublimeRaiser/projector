@@ -6,10 +6,10 @@ doctrine:
         # either here or in the DATABASE_URL env var (see .env file)
         #server_version: '13'
         types:
-            user_user_id: App\Model\User\Entity\User\IdType
-            user_user_email: App\Model\User\Entity\User\EmailType
-            user_user_role: App\Model\User\Entity\User\RoleType
-            user_user_status: App\Model\User\Entity\User\StatusType
+            user_user_id: App\Model\Auth\Entity\User\IdType
+            user_user_email: App\Model\Auth\Entity\User\EmailType
+            user_user_role: App\Model\Auth\Entity\User\RoleType
+            user_user_status: App\Model\Auth\Entity\User\StatusType
     orm:
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
@@ -18,6 +18,6 @@ doctrine:
             User:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Model/User/Entity'
-                prefix: 'App\Model\User\Entity'
+                dir: '%kernel.project_dir%/src/Model/Auth/Entity'
+                prefix: 'App\Model\Auth\Entity'
                 alias: App
