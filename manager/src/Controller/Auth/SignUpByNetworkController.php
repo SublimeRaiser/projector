@@ -38,7 +38,7 @@ class SignUpByNetworkController extends AbstractController
     }
 
     /**
-     * @Route("/signup", name="signup.request")
+     * @Route("/signup", name="auth.signup.request")
      *
      * @param Request                       $request
      * @param SignUpByEmail\Request\Handler $handler
@@ -69,7 +69,7 @@ class SignUpByNetworkController extends AbstractController
     }
 
     /**
-     * @Route("/signup/{token}", name="signup.confirm")
+     * @Route("/signup/{token}", name="auth.signup.confirm")
      * @param string                        $token
      * @param SignUpByEmail\Confirm\Handler $handler
      *
