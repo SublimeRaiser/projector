@@ -6,7 +6,7 @@ namespace App\Model\User\Service;
 
 use RuntimeException;
 
-class PasswordHasher implements PasswordHasherInterface
+class PasswordHasher
 {
     public function hash(string $password): string
     {

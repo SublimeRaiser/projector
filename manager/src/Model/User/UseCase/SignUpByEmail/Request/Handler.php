@@ -11,7 +11,7 @@ use App\Model\User\Entity\User\UserRepository;
 use App\Model\User\FlusherInterface;
 use App\Model\User\Service\ConfirmTokenGenerator;
 use App\Model\User\Service\ConfirmTokenSender;
-use App\Model\User\Service\PasswordHasherInterface;
+use App\Model\User\Service\PasswordHasher;
 use DateTimeImmutable;
 use DomainException;
 
@@ -20,7 +20,7 @@ class Handler
     /** @var UserRepository */
     private $userRepo;
 
-    /** @var PasswordHasherInterface */
+    /** @var PasswordHasher */
     private $hasher;
 
     /** @var FlusherInterface */
@@ -35,15 +35,15 @@ class Handler
     /**
      * Handler constructor.
      *
-     * @param UserRepository          $userRepo
-     * @param PasswordHasherInterface $hasher
-     * @param FlusherInterface        $flusher
-     * @param ConfirmTokenGenerator   $tokenGenerator
-     * @param ConfirmTokenSender      $tokenSender
+     * @param UserRepository        $userRepo
+     * @param PasswordHasher        $hasher
+     * @param FlusherInterface      $flusher
+     * @param ConfirmTokenGenerator $tokenGenerator
+     * @param ConfirmTokenSender    $tokenSender
      */
     public function __construct(
         UserRepository $userRepo,
-        PasswordHasherInterface $hasher,
+        PasswordHasher $hasher,
         FlusherInterface $flusher,
         ConfirmTokenGenerator $tokenGenerator,
         ConfirmTokenSender $tokenSender
