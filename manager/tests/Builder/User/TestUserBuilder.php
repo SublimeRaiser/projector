@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Builder\User;
 
-use App\Model\User\Entity\User\Email;
-use App\Model\User\Entity\User\Id;
-use App\Model\User\Entity\User\User;
+use App\Model\Auth\Entity\User\Email;
+use App\Model\Auth\Entity\User\Id;
+use App\Model\Auth\Entity\User\User;
 use DateTimeImmutable;
 
 class TestUserBuilder
