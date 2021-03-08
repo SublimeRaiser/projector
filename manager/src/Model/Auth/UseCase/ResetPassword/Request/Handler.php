@@ -8,7 +8,7 @@ use App\Model\Auth\Entity\User\Email;
 use App\Model\Auth\Entity\User\UserRepository;
 use App\Model\Auth\FlusherInterface;
 use App\Model\Auth\Service\ResetTokenGenerator;
-use App\Model\Auth\Service\ResetTokenSenderInterface;
+use App\Model\Auth\Service\ResetTokenSender;
 use DateTimeImmutable;
 
 class Handler
@@ -29,23 +29,23 @@ class Handler
     private $tokenGenerator;
 
     /**
-     * @var ResetTokenSenderInterface
+     * @var ResetTokenSender
      */
     private $tokenSender;
 
     /**
      * Handler constructor.
      *
-     * @param UserRepository            $userRepo
-     * @param FlusherInterface          $flusher
-     * @param ResetTokenGenerator       $tokenGenerator
-     * @param ResetTokenSenderInterface $tokenSender
+     * @param UserRepository      $userRepo
+     * @param FlusherInterface    $flusher
+     * @param ResetTokenGenerator $tokenGenerator
+     * @param ResetTokenSender    $tokenSender
      */
     public function __construct(
         UserRepository $userRepo,
         FlusherInterface $flusher,
         ResetTokenGenerator $tokenGenerator,
-        ResetTokenSenderInterface $tokenSender
+        ResetTokenSender $tokenSender
     ) {
         $this->userRepo       = $userRepo;
         $this->flusher        = $flusher;

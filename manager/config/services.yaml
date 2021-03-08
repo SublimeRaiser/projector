@@ -32,3 +32,10 @@ services:
     # please note that last definitions always *replace* previous ones
     App\Model\Auth\Service\ConfirmTokenSender:
         $from: '%env(MAILER_FROM_ADDR)%'
+
+    App\Model\Auth\Service\ResetTokenSender:
+        $from: '%env(MAILER_FROM_ADDR)%'
+
+    App\Model\Auth\Service\ResetTokenGenerator:
+        factory: App\Container\Model\Auth\Service\ResetTokenGeneratorFactory:create
+        arguments: ['PT1H']
