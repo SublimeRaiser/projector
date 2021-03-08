@@ -54,7 +54,7 @@ class SignUpByNetworkController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $handler->handle($command);
-                $this->addFlash('success', 'Confirm your email address.');
+                $this->addFlash('success', 'Check your email for the confirmation link.');
 
                 return $this->redirectToRoute('home');
             } catch (DomainException $e) {
