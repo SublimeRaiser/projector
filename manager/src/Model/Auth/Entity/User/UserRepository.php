@@ -101,7 +101,7 @@ class UserRepository
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function hasByEmail(Email $email): bool
+    public function existsByEmail(Email $email): bool
     {
         return $this->repo->createQueryBuilder('uu')
             ->select('COUNT(uu.id)')
@@ -120,7 +120,7 @@ class UserRepository
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function hasByNetwork(string $networkName, string $identity): bool
+    public function existsByNetwork(string $networkName, string $identity): bool
     {
         return $this->repo->createQueryBuilder('uu')
             ->select('COUNT(uu.id)')

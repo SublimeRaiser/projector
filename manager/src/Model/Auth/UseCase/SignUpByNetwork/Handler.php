@@ -14,7 +14,7 @@ use DomainException;
 class Handler
 {
     /** @var UserRepository */
-    private $userRepo;
+    private $users;
 
     /** @var FlusherInterface */
     private $flusher;
@@ -22,20 +22,20 @@ class Handler
     /**
      * Handler constructor.
      *
-     * @param UserRepository $userRepo
+     * @param UserRepository $users
      * @param FlusherInterface        $flusher
      */
-    public function __construct(UserRepository $userRepo, FlusherInterface $flusher)
+    public function __construct(UserRepository $users, FlusherInterface $flusher)
     {
-        $this->userRepo = $userRepo;
-        $this->flusher  = $flusher;
+        $this->users   = $users;
+        $this->flusher = $flusher;
     }
 
     public function handle(Command $command): void
     {
         $networkName = $command->networkName;
         $identity    = $command->identity;
-        if ($this->userRepo->hasByNetwork($networkName, $identity)) {
+        if ($this->users->existsByNetwork($networkName, $identity)) {
             throw new DomainException('User already exists.');
         }
 
@@ -46,7 +46,7 @@ class Handler
             $identity
         );
 
-        $this->userRepo->add($user);
+        $this->users->add($user);
         $this->flusher->flush();
     }
 }

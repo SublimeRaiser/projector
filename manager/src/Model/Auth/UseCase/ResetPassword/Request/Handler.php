@@ -16,7 +16,7 @@ class Handler
     /**
      * @var UserRepository
      */
-    private $userRepo;
+    private $users;
 
     /**
      * @var FlusherInterface
@@ -36,18 +36,18 @@ class Handler
     /**
      * Handler constructor.
      *
-     * @param UserRepository      $userRepo
+     * @param UserRepository      $users
      * @param FlusherInterface    $flusher
      * @param ResetTokenGenerator $tokenGenerator
      * @param ResetTokenSender    $tokenSender
      */
     public function __construct(
-        UserRepository $userRepo,
+        UserRepository $users,
         FlusherInterface $flusher,
         ResetTokenGenerator $tokenGenerator,
         ResetTokenSender $tokenSender
     ) {
-        $this->userRepo       = $userRepo;
+        $this->users          = $users;
         $this->flusher        = $flusher;
         $this->tokenGenerator = $tokenGenerator;
         $this->tokenSender    = $tokenSender;
@@ -56,7 +56,7 @@ class Handler
     public function handle(Command $command): void
     {
         $email = new Email($command->email);
-        $user  = $this->userRepo->getByEmail($email);
+        $user  = $this->users->getByEmail($email);
         $user->requestPasswordReset(
             $this->tokenGenerator->generate(),
             new DateTimeImmutable()

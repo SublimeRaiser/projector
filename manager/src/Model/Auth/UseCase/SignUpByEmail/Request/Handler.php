@@ -18,7 +18,7 @@ use DomainException;
 class Handler
 {
     /** @var UserRepository */
-    private $userRepo;
+    private $users;
 
     /** @var PasswordHasher */
     private $hasher;
@@ -35,20 +35,20 @@ class Handler
     /**
      * Handler constructor.
      *
-     * @param UserRepository        $userRepo
+     * @param UserRepository        $users
      * @param PasswordHasher        $hasher
      * @param FlusherInterface      $flusher
      * @param ConfirmTokenGenerator $tokenGenerator
      * @param ConfirmTokenSender    $tokenSender
      */
     public function __construct(
-        UserRepository $userRepo,
+        UserRepository $users,
         PasswordHasher $hasher,
         FlusherInterface $flusher,
         ConfirmTokenGenerator $tokenGenerator,
         ConfirmTokenSender $tokenSender
     ) {
-        $this->userRepo       = $userRepo;
+        $this->users          = $users;
         $this->hasher         = $hasher;
         $this->flusher        = $flusher;
         $this->tokenGenerator = $tokenGenerator;
@@ -59,7 +59,7 @@ class Handler
     {
         $email = new Email($command->email);
 
-        if ($this->userRepo->hasByEmail($email)) {
+        if ($this->users->existsByEmail($email)) {
             throw new DomainException('User already exists.');
         }
 
@@ -71,7 +71,7 @@ class Handler
             $token = $this->tokenGenerator->generate()
         );
 
-        $this->userRepo->add($user);
+        $this->users->add($user);
         $this->flusher->flush();
 
         $this->tokenSender->send($user->getEmail(), $user->getConfirmToken());

@@ -15,7 +15,7 @@ class Handler
     /**
      * @var UserRepository
      */
-    private $userRepo;
+    private $users;
 
     /**
      * @var PasswordHasher
@@ -30,18 +30,18 @@ class Handler
     /**
      * Handler constructor.
      *
-     * @param UserRepository   $userRepo
+     * @param UserRepository   $users
      * @param PasswordHasher   $hasher
      * @param FlusherInterface $flusher
      */
     public function __construct(
-        UserRepository $userRepo,
+        UserRepository $users,
         PasswordHasher $hasher,
         FlusherInterface $flusher
     ) {
-        $this->userRepo = $userRepo;
-        $this->hasher   = $hasher;
-        $this->flusher  = $flusher;
+        $this->users   = $users;
+        $this->hasher  = $hasher;
+        $this->flusher = $flusher;
     }
 
     public function handle(Command $command): void
@@ -49,7 +49,7 @@ class Handler
         $resetToken = $command->token;
         $password   = $command->password;
 
-        $user = $this->userRepo->findByResetToken($resetToken);
+        $user = $this->users->findByResetToken($resetToken);
         if (!$user) {
             throw new DomainException('Invalid or already used token.');
         }

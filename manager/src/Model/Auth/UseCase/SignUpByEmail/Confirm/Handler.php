@@ -11,7 +11,7 @@ use DomainException;
 class Handler
 {
     /** @var UserRepository */
-    private $userRepo;
+    private $users;
 
     /** @var FlusherInterface */
     private $flusher;
@@ -24,13 +24,13 @@ class Handler
      */
     public function __construct(UserRepository $users, FlusherInterface $flusher)
     {
-        $this->userRepo = $users;
-        $this->flusher  = $flusher;
+        $this->users   = $users;
+        $this->flusher = $flusher;
     }
 
     public function handle(Command $command): void
     {
-        $user = $this->userRepo->findByConfirmToken($command->token);
+        $user = $this->users->findByConfirmToken($command->token);
         if (!$user) {
             throw new DomainException('Invalid or already used token.');
         }
