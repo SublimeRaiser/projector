@@ -25,11 +25,6 @@ class ConfirmTokenSender
     private $templatedEmail;
 
     /**
-     * @var array
-     */
-    private $from;
-
-    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -39,18 +34,15 @@ class ConfirmTokenSender
      *
      * @param MailerInterface $mailer
      * @param TemplatedEmail  $templatedEmail
-     * @param array           $from
      * @param LoggerInterface $logger
      */
     public function __construct(
         MailerInterface $mailer,
         TemplatedEmail $templatedEmail,
-        array $from,
         LoggerInterface $logger
     ) {
         $this->mailer         = $mailer;
         $this->templatedEmail = $templatedEmail;
-        $this->from           = $from;
         $this->logger         = $logger;
     }
 
@@ -63,7 +55,6 @@ class ConfirmTokenSender
     public function send(Email $email, string $token): void
     {
         $email = $this->templatedEmail
-            ->from(...$this->from)
             ->to($email->getValue())
             ->subject('Sign Up Confirmation')
             ->htmlTemplate('mail/auth/signup.html.twig')

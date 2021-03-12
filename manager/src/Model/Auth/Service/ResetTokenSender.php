@@ -26,11 +26,6 @@ class ResetTokenSender
     private $templatedEmail;
 
     /**
-     * @var array
-     */
-    private $from;
-
-    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -40,18 +35,15 @@ class ResetTokenSender
      *
      * @param MailerInterface $mailer
      * @param TemplatedEmail  $templatedEmail
-     * @param array           $from
      * @param LoggerInterface $logger
      */
     public function __construct(
         MailerInterface $mailer,
         TemplatedEmail $templatedEmail,
-        array $from,
         LoggerInterface $logger
     ) {
         $this->mailer         = $mailer;
         $this->templatedEmail = $templatedEmail;
-        $this->from           = $from;
         $this->logger         = $logger;
     }
 
@@ -64,7 +56,6 @@ class ResetTokenSender
     public function send(Email $email, ResetToken $token): void
     {
         $email = $this->templatedEmail
-            ->from(...$this->from)
             ->to($email->getValue())
             ->subject('Password Reset')
             ->htmlTemplate('mail/auth/reset_password.html.twig')
