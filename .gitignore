@@ -1,7 +1,7 @@
 .idea/
 
 ###> symfony/framework-bundle ###
-manager/.env.local
+manager/.env
 manager/.env.local.php
 manager/.env.*.local
 manager/config/secrets/prod/prod.decrypt.private.php
