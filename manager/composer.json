@@ -1,4 +1,6 @@
 {
+    "name": "sublimeraiser/projector",
+    "description": "Project Manager App",
     "type": "project",
     "license": "proprietary",
     "require": {
