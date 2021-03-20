@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class SignUpByNetworkController extends AbstractController
+class SignUpByEmailController extends AbstractController
 {
     /**
      * @var LoggerInterface
