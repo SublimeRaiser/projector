@@ -20,11 +20,6 @@ class ConfirmTokenSender
     private $mailer;
 
     /**
-     * @var TemplatedEmail
-     */
-    private $templatedEmail;
-
-    /**
      * @var LoggerInterface
      */
     private $logger;
@@ -33,17 +28,12 @@ class ConfirmTokenSender
      * ConfirmTokenSender constructor.
      *
      * @param MailerInterface $mailer
-     * @param TemplatedEmail  $templatedEmail
      * @param LoggerInterface $logger
      */
-    public function __construct(
-        MailerInterface $mailer,
-        TemplatedEmail $templatedEmail,
-        LoggerInterface $logger
-    ) {
-        $this->mailer         = $mailer;
-        $this->templatedEmail = $templatedEmail;
-        $this->logger         = $logger;
+    public function __construct(MailerInterface $mailer, LoggerInterface $logger)
+    {
+        $this->mailer = $mailer;
+        $this->logger = $logger;
     }
 
     /**
@@ -54,7 +44,7 @@ class ConfirmTokenSender
      */
     public function send(Email $email, string $token): void
     {
-        $email = $this->templatedEmail
+        $email = (new TemplatedEmail())
             ->to($email->getValue())
             ->subject('Sign Up Confirmation')
             ->htmlTemplate('mail/auth/signup.html.twig')
