@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Auth\UseCase\SignUpByEmail\Confirm;
 
 use App\Model\Auth\Entity\User\UserRepository;
-use App\Model\Auth\FlusherInterface;
+use App\Model\Auth\Flusher;
 use DomainException;
 
 class Handler
@@ -13,16 +13,16 @@ class Handler
     /** @var UserRepository */
     private $users;
 
-    /** @var FlusherInterface */
+    /** @var Flusher */
     private $flusher;
 
     /**
      * Handler constructor.
      *
      * @param UserRepository $users
-     * @param FlusherInterface        $flusher
+     * @param Flusher        $flusher
      */
-    public function __construct(UserRepository $users, FlusherInterface $flusher)
+    public function __construct(UserRepository $users, Flusher $flusher)
     {
         $this->users   = $users;
         $this->flusher = $flusher;

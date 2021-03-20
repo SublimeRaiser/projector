@@ -8,7 +8,7 @@ use App\Model\Auth\Entity\User\Email;
 use App\Model\Auth\Entity\User\Id;
 use App\Model\Auth\Entity\User\User;
 use App\Model\Auth\Entity\User\UserRepository;
-use App\Model\Auth\FlusherInterface;
+use App\Model\Auth\Flusher;
 use App\Model\Auth\Service\ConfirmTokenGenerator;
 use App\Model\Auth\Service\ConfirmTokenSender;
 use App\Model\Auth\Service\PasswordHasher;
@@ -23,7 +23,7 @@ class Handler
     /** @var PasswordHasher */
     private $hasher;
 
-    /** @var FlusherInterface */
+    /** @var Flusher */
     private $flusher;
 
     /** @var ConfirmTokenGenerator */
@@ -37,14 +37,14 @@ class Handler
      *
      * @param UserRepository        $users
      * @param PasswordHasher        $hasher
-     * @param FlusherInterface      $flusher
+     * @param Flusher               $flusher
      * @param ConfirmTokenGenerator $tokenGenerator
      * @param ConfirmTokenSender    $tokenSender
      */
     public function __construct(
         UserRepository $users,
         PasswordHasher $hasher,
-        FlusherInterface $flusher,
+        Flusher $flusher,
         ConfirmTokenGenerator $tokenGenerator,
         ConfirmTokenSender $tokenSender
     ) {

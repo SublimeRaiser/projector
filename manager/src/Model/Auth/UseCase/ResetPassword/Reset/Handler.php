@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Auth\UseCase\ResetPassword\Reset;
 
 use App\Model\Auth\Entity\User\UserRepository;
-use App\Model\Auth\FlusherInterface;
+use App\Model\Auth\Flusher;
 use App\Model\Auth\Service\PasswordHasher;
 use DateTimeImmutable;
 use DomainException;
@@ -23,21 +23,21 @@ class Handler
     private $hasher;
 
     /**
-     * @var FlusherInterface
+     * @var Flusher
      */
     private $flusher;
 
     /**
      * Handler constructor.
      *
-     * @param UserRepository   $users
-     * @param PasswordHasher   $hasher
-     * @param FlusherInterface $flusher
+     * @param UserRepository $users
+     * @param PasswordHasher $hasher
+     * @param Flusher        $flusher
      */
     public function __construct(
         UserRepository $users,
         PasswordHasher $hasher,
-        FlusherInterface $flusher
+        Flusher $flusher
     ) {
         $this->users   = $users;
         $this->hasher  = $hasher;

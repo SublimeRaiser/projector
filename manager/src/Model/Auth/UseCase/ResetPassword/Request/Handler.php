@@ -6,7 +6,7 @@ namespace App\Model\Auth\UseCase\ResetPassword\Request;
 
 use App\Model\Auth\Entity\User\Email;
 use App\Model\Auth\Entity\User\UserRepository;
-use App\Model\Auth\FlusherInterface;
+use App\Model\Auth\Flusher;
 use App\Model\Auth\Service\ResetTokenGenerator;
 use App\Model\Auth\Service\ResetTokenSender;
 use DateTimeImmutable;
@@ -19,7 +19,7 @@ class Handler
     private $users;
 
     /**
-     * @var FlusherInterface
+     * @var Flusher
      */
     private $flusher;
 
@@ -37,13 +37,13 @@ class Handler
      * Handler constructor.
      *
      * @param UserRepository      $users
-     * @param FlusherInterface    $flusher
+     * @param Flusher             $flusher
      * @param ResetTokenGenerator $tokenGenerator
      * @param ResetTokenSender    $tokenSender
      */
     public function __construct(
         UserRepository $users,
-        FlusherInterface $flusher,
+        Flusher $flusher,
         ResetTokenGenerator $tokenGenerator,
         ResetTokenSender $tokenSender
     ) {

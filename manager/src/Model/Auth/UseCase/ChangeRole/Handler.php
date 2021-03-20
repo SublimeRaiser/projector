@@ -7,17 +7,17 @@ namespace App\Model\Auth\UseCase\ChangeRole;
 use App\Model\Auth\Entity\User\Id;
 use App\Model\Auth\Entity\User\Role;
 use App\Model\Auth\Entity\User\UserRepository;
-use App\Model\Auth\FlusherInterface;
+use App\Model\Auth\Flusher;
 
 class Handler
 {
     /** @var UserRepository */
     private $users;
 
-    /** @var FlusherInterface */
+    /** @var Flusher */
     private $flusher;
 
-    public function __construct(UserRepository $users, FlusherInterface $flusher)
+    public function __construct(UserRepository $users, Flusher $flusher)
     {
         $this->users   = $users;
         $this->flusher = $flusher;
