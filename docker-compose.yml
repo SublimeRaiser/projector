@@ -37,6 +37,10 @@ services:
       POSTGRES_DB: app
     ports:
       - "54321:5432"
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "8081:8025"
 volumes:
   composer:
   postgres:
