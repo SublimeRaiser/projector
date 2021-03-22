@@ -44,7 +44,7 @@ class ConfirmTokenSender
      */
     public function send(Email $email, string $token): void
     {
-        $email = (new TemplatedEmail())
+        $message = (new TemplatedEmail())
             ->to($email->getValue())
             ->subject('Sign Up Confirmation')
             ->htmlTemplate('mail/auth/signup.html.twig')
@@ -52,11 +52,11 @@ class ConfirmTokenSender
                 'token' => $token,
             ]);
         try {
-            $this->mailer->send($email);
+            $this->mailer->send($message);
         } catch (Exception $e) {
-            $message = 'Unable to send message.';
-            $this->logger->error($message, ['exception' => $e]);
-            throw new RuntimeException($message);
+            $exceptionMessage = 'Unable to send message.';
+            $this->logger->error($exceptionMessage, ['exception' => $e, 'email' => $email->getValue()]);
+            throw new RuntimeException($exceptionMessage);
         }
     }
 }
