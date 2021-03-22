@@ -50,7 +50,7 @@ class ResetTokenSender
             ->subject('Password Reset')
             ->htmlTemplate('mail/auth/reset_password.html.twig')
             ->context([
-                'token' => $token,
+                'token' => $token->getValue(),
             ]);
         try {
             $this->mailer->send($email);
