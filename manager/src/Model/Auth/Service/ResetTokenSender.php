@@ -45,7 +45,7 @@ class ResetTokenSender
      */
     public function send(Email $email, ResetToken $token): void
     {
-        $email = (new TemplatedEmail())
+        $message = (new TemplatedEmail())
             ->to($email->getValue())
             ->subject('Password Reset')
             ->htmlTemplate('mail/auth/reset_password.html.twig')
@@ -53,11 +53,11 @@ class ResetTokenSender
                 'token' => $token->getValue(),
             ]);
         try {
-            $this->mailer->send($email);
+            $this->mailer->send($message);
         } catch (Exception $e) {
-            $message = 'Unable to send message.';
-            $this->logger->error($message, ['exception' => $e]);
-            throw new RuntimeException($message);
+            $exceptionMessage = 'Unable to send message.';
+            $this->logger->error($exceptionMessage, ['exception' => $e, 'email' => $email->getValue()]);
+            throw new RuntimeException($exceptionMessage);
         }
     }
 }
