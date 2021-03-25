@@ -57,6 +57,6 @@ class ResetToken
      */
     public function isEmpty(): bool
     {
-        return empty($value);
+        return empty($this->getValue());
     }
 }
