@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Security;
 
+use App\ReadModel\Auth\AuthView;
 use App\ReadModel\Auth\UserFetcher;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -32,31 +33,22 @@ class UserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username): UserInterface
     {
-        $user = $this->users->findForAuth($username);
-        if (!$user) {
-            throw new UsernameNotFoundException('User not found.');
-        }
+        $user = $this->loadUser($username);
 
-        return new UserIdentity(
-            $user->id,
-            $user->email,
-            $user->password_hash,
-            $user->role,
-            $user->status
-        );
-
+        return self::buildIdentityByUser($user);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function refreshUser(UserInterface $user): UserInterface
+    public function refreshUser(UserInterface $identity): UserInterface
     {
-        if (!$user instanceof UserIdentity) {
-            throw new UnsupportedUserException('Invalid user class '.get_class($user));
+        if (!$identity instanceof UserIdentity) {
+            throw new UnsupportedUserException('Invalid user class '.get_class($identity));
         }
+        $user = $this->loadUser($identity->getUsername());
 
-        return $user;
+        return self::buildIdentityByUser($user);
     }
 
     /**
@@ -65,5 +57,42 @@ class UserProvider implements UserProviderInterface
     public function supportsClass($class): bool
     {
         return $class === UserIdentity::class;
+    }
+
+    /**
+     * Loads user data from the database.
+     *
+     * @param string $username
+     *
+     * @return AuthView
+     *
+     * @throws UsernameNotFoundException if the user is not found
+     */
+    private function loadUser(string $username): AuthView
+    {
+        $user = $this->users->findForAuth($username);
+        if (!$user) {
+            throw new UsernameNotFoundException('User not found.');
+        }
+
+        return $user;
+    }
+
+    /**
+     * Builds user identity for the provided user data.
+     *
+     * @param AuthView $user
+     *
+     * @return UserIdentity
+     */
+    private static function buildIdentityByUser(AuthView $user): UserIdentity
+    {
+        return new UserIdentity(
+            $user->id,
+            $user->email,
+            $user->password_hash,
+            $user->role,
+            $user->status
+        );
     }
 }
