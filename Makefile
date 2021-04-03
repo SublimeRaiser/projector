@@ -1,6 +1,6 @@
 up: docker-up
 init: docker-down-clear docker-pull docker-build docker-up manager-init
-manager-init: manager-composer-install manager-wait-db manager-migrations
+manager-init: manager-composer-install manager-wait-db manager-migrations manager-fixtures
 test: manager-test
 
 docker-up:
@@ -26,6 +26,9 @@ manager-wait-db:
 
 manager-migrations:
 	docker-compose run --rm projector-php-cli php bin/console doctrine:migrations:migrate --no-interaction
+
+manager-fixtures:
+	docker-compose run --rm projector-php-cli php bin/console doctrine:fixtures:load --no-interaction
 
 manager-test:
 	docker-compose run --rm projector-php-cli php bin/phpunit
