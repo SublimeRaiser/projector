@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Security;
 
+use App\Model\Auth\Entity\User\Status;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserIdentity implements UserInterface
@@ -29,19 +30,26 @@ class UserIdentity implements UserInterface
     private $role;
 
     /**
+     * @var string
+     */
+    private $status;
+
+    /**
      * UserIdentity constructor.
      *
      * @param string $id
      * @param string $username
      * @param string $password
      * @param string $role
+     * @param string $status
      */
-    public function __construct(string $id, string $username, string $password, string $role)
+    public function __construct(string $id, string $username, string $password, string $role, string $status)
     {
         $this->id       = $id;
         $this->username = $username;
         $this->password = $password;
         $this->role     = $role;
+        $this->status   = $status;
     }
 
     /**
@@ -89,5 +97,15 @@ class UserIdentity implements UserInterface
      */
     public function eraseCredentials(): void
     {
+    }
+
+    /**
+     * Checks if the user is active.
+     *
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->status === Status::ACTIVE;
     }
 }

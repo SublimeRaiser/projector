@@ -8,9 +8,9 @@ use Webmozart\Assert\Assert;
 
 class Status
 {
-    private const NEW    = 'new';
-    private const WAIT   = 'wait';
-    private const ACTIVE = 'active';
+    public const NEW    = 'new';
+    public const WAIT   = 'wait';
+    public const ACTIVE = 'active';
 
     /** @var string */
     private $name;
